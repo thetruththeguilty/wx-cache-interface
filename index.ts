@@ -1,6 +1,6 @@
 import { IValueWrapper, createCache } from 'cache-creator'
 
-export function createLevelCache(
+export function createWxCache(
   wxStorage: {
     getStorageSync: (key: string) => any
     setStorageSync: (key: string, value: any) => void

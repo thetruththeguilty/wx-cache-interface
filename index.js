@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const cache_creator_1 = require("cache-creator");
-function createLevelCache(wxStorage) {
+function createWxCache(wxStorage) {
     return cache_creator_1.createCache(wxStorage, {
         getter: (storage, key) => __awaiter(this, void 0, void 0, function* () {
             let value = storage.getStorageSync(key);
@@ -26,4 +26,4 @@ function createLevelCache(wxStorage) {
         }),
     });
 }
-exports.createLevelCache = createLevelCache;
+exports.createWxCache = createWxCache;
