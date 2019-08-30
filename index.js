@@ -12,18 +12,17 @@ const cache_creator_1 = require("cache-creator");
 function createLevelCache(wxStorage) {
     return cache_creator_1.createCache(wxStorage, {
         getter: (storage, key) => __awaiter(this, void 0, void 0, function* () {
-            let res = storage.getStorageSync(key);
-            if (!res)
+            let value = storage.getStorageSync(key);
+            if (!value)
                 return undefined;
-            let value = JSON.parse(res);
             return value;
         }),
         setter: (storage, key, value) => __awaiter(this, void 0, void 0, function* () {
-            storage.setStorageSync(key, JSON.stringify(value));
+            storage.setStorageSync(key, value);
             return value;
         }),
         onTimeout: (storage, key, box) => __awaiter(this, void 0, void 0, function* () {
-            storage.removeStorageSync(key);
+            storage.setStorageSync(key, {});
         }),
     });
 }

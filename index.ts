@@ -2,24 +2,22 @@ import { IValueWrapper, createCache } from 'cache-creator'
 
 export function createLevelCache(
   wxStorage: {
-    getStorageSync: (key: string) => string
-    setStorageSync: (key: string, value: string) => void
-    removeStorageSync: (key: string) => void
+    getStorageSync: (key: string) => any
+    setStorageSync: (key: string, value: any) => void
   }
 ) {
   return createCache(wxStorage, {
     getter: async (storage, key) => {
-      let res = storage.getStorageSync(key)
-      if (!res) return undefined
-      let value = JSON.parse(res)
+      let value = storage.getStorageSync(key)
+      if (!value) return undefined
       return value as IValueWrapper<any>
     },
     setter: async (storage, key, value) => {
-      storage.setStorageSync(key, JSON.stringify(value))
+      storage.setStorageSync(key, value)
       return value
     },
     onTimeout: async (storage, key, box) => {
-      storage.removeStorageSync(key)
+      storage.setStorageSync(key, {})
     },
   })
 }
