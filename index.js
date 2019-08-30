@@ -9,21 +9,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const cache_creator_1 = require("cache-creator");
+const memoryCache_1 = require("cache-creator/memoryCache");
 function createWxCache(wxStorage) {
-    return cache_creator_1.createCache(wxStorage, {
-        getter: (storage, key) => __awaiter(this, void 0, void 0, function* () {
-            let value = storage.getStorageSync(key);
-            if (!value)
-                return undefined;
-            return value;
-        }),
-        setter: (storage, key, value) => __awaiter(this, void 0, void 0, function* () {
-            storage.setStorageSync(key, value);
-            return value;
-        }),
-        onTimeout: (storage, key, box) => __awaiter(this, void 0, void 0, function* () {
-            storage.setStorageSync(key, {});
-        }),
-    });
+    // @ts-ignore
+    if (wxStorage) {
+        return cache_creator_1.createCache(wxStorage, {
+            getter: (storage, key) => __awaiter(this, void 0, void 0, function* () {
+                let value = storage.getStorageSync(key);
+                if (!value)
+                    return undefined;
+                return value;
+            }),
+            setter: (storage, key, value) => __awaiter(this, void 0, void 0, function* () {
+                storage.setStorageSync(key, value);
+                return value;
+            }),
+            onTimeout: (storage, key, box) => __awaiter(this, void 0, void 0, function* () {
+                storage.setStorageSync(key, {});
+            }),
+        });
+    }
+    else {
+        console.warn("your input value is not a storage.");
+        console.warn("then use memory cache as default");
+        return memoryCache_1.createMemoryCache(500);
+    }
 }
 exports.createWxCache = createWxCache;
