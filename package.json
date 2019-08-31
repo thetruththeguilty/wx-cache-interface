@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cache-creator": "^1.2.0"
+    "cache-creator": "^1.3.0"
   }
 }

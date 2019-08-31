@@ -1,4 +1,4 @@
-# 将微信wx适配为通用cache
+# 将微信wx storage适配为通用cache
 
 ## install 安装
 ```shell
@@ -7,9 +7,11 @@ $ npm install wx-cache-interface
 
 ## usage 使用
 ```ts
-import {createLevelCache} from 'wx-cache-interface'
+import { createWxCache } from 'wx-cache-interface'
 
-let wxCache = createLevelCache(window.wx)
+// 如果window.wx为空，则使用window.localStorage
+// 如果window.localStorage 也为空，则使用一个普通的memoryCache
+let wxCache = createWxCache(window.wx)
 
 // 储存了1
 wxCache.save('a', 1)
