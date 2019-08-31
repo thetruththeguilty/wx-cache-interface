@@ -12,8 +12,21 @@ const cache_creator_1 = require("cache-creator");
 const memoryCache_1 = require("cache-creator/memoryCache");
 function createWxCache(wxStorage) {
     // @ts-ignore
-    if (wxStorage) {
-        return cache_creator_1.createCache(wxStorage, {
+    let _localStorage = {
+        getStorageSync: (key) => {
+            try {
+                // @ts-ignore
+                return JSON.parse(window.localStorage.getItem(key));
+            }
+            catch (e) {
+                return false;
+            }
+        },
+        // @ts-ignore
+        setStorageSync: (key, value) => window.localStorage.setItem(key, JSON.stringify(value)),
+    };
+    if (wxStorage || window.localStorage) {
+        return cache_creator_1.createCache(wxStorage || _localStorage, {
             getter: (storage, key) => __awaiter(this, void 0, void 0, function* () {
                 let value = storage.getStorageSync(key);
                 if (!value)

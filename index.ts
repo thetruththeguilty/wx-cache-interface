@@ -1,15 +1,30 @@
-import { IValueWrapper, createCache } from 'cache-creator'
+import { IValueWrapper, createCache, ICache } from 'cache-creator'
 import { createMemoryCache } from 'cache-creator/memoryCache'
 
-export function createWxCache(
+export function createWxCache<T>(
   wxStorage: {
     getStorageSync: (key: string) => any
     setStorageSync: (key: string, value: any) => void
   } | undefined | null
-) {
+): ICache<T> {
+
   // @ts-ignore
-  if (wxStorage) {
-    return createCache(wxStorage, {
+  let _localStorage = {
+    getStorageSync: (key: string) => {
+      try {
+        // @ts-ignore
+        return JSON.parse(window.localStorage.getItem(key))
+      }
+      catch (e) {
+        return false
+      }
+    },
+    // @ts-ignore
+    setStorageSync: (key: string, value: any) => window.localStorage.setItem(key, JSON.stringify(value)),
+  }
+
+  if (wxStorage || window.localStorage) {
+    return createCache(wxStorage || _localStorage, {
       getter: async (storage, key) => {
         let value = storage.getStorageSync(key)
         if (!value) return undefined
